@@ -1,0 +1,11 @@
+propel:
+  _attributes:      { package: plugins.cre8NewsPlugin.lib.model }
+  
+  news:
+    id:           ~
+    title:        { type: varchar(80), required: true }
+    summary:      { type: longvarchar }
+    content:      { type: longvarchar }
+    slug:         { type: varchar(100), required: true }
+    display_date: { type: timestamp }
+    is_active:    { type: boolean, default: 1 }
