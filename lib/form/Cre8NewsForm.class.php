@@ -23,5 +23,7 @@ class Cre8NewsForm extends BaseCre8NewsForm
     
     $this->widgetSchema['title']->setAttributes(array('style' => 'width: 350px;'));
     
+    $this->widgetSchema['cre8_news_cre8_news_category_list']->setLabel('Category');
+    
   }
 }

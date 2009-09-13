@@ -1,7 +1,7 @@
 propel:
   _attributes:      { package: plugins.cre8NewsPlugin.lib.model }
   
-  news:
+  cre8_news:
     id:           ~
     title:        { type: varchar(80), required: true }
     summary:      { type: longvarchar }
@@ -9,3 +9,12 @@ propel:
     slug:         { type: varchar(100), required: true }
     display_date: { type: timestamp }
     is_active:    { type: boolean, default: 1 }
+  
+  cre8_news_category:
+    id:           ~
+    name:         { type: varchar(128), required: true, index: unique }
+  
+  cre8_news_cre8_news_category:
+    cre8_news_id:           { type: integer, required: true, foreignTable: cre8_news, foreignReference: id, onDelete: cascade, primaryKey: true }
+    cre8_news_category_id:  { type: integer, required: true, foreignTable: cre8_news_category, foreignReference: id, onDelete: cascade, primaryKey: true }
+  
