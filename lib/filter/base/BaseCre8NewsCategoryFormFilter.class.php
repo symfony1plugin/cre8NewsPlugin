@@ -16,11 +16,13 @@ class BaseCre8NewsCategoryFormFilter extends BaseFormFilterPropel
   {
     $this->setWidgets(array(
       'name'                              => new sfWidgetFormFilterInput(),
+      'slug'                              => new sfWidgetFormFilterInput(),
       'cre8_news_cre8_news_category_list' => new sfWidgetFormPropelChoice(array('model' => 'Cre8News', 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
       'name'                              => new sfValidatorPass(array('required' => false)),
+      'slug'                              => new sfValidatorPass(array('required' => false)),
       'cre8_news_cre8_news_category_list' => new sfValidatorPropelChoice(array('model' => 'Cre8News', 'required' => false)),
     ));
 
@@ -66,6 +68,7 @@ class BaseCre8NewsCategoryFormFilter extends BaseFormFilterPropel
     return array(
       'id'                                => 'Number',
       'name'                              => 'Text',
+      'slug'                              => 'Text',
       'cre8_news_cre8_news_category_list' => 'ManyKey',
     );
   }

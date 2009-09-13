@@ -12,7 +12,8 @@ propel:
   
   cre8_news_category:
     id:           ~
-    name:         { type: varchar(128), required: true, index: unique }
+    name:         { type: varchar(128), required: true }
+    slug:         { type: varchar(160), required: true }
   
   cre8_news_cre8_news_category:
     cre8_news_id:           { type: integer, required: true, foreignTable: cre8_news, foreignReference: id, onDelete: cascade, primaryKey: true }

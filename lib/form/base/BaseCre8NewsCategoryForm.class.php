@@ -15,18 +15,16 @@ class BaseCre8NewsCategoryForm extends BaseFormPropel
     $this->setWidgets(array(
       'id'                                => new sfWidgetFormInputHidden(),
       'name'                              => new sfWidgetFormInput(),
+      'slug'                              => new sfWidgetFormInput(),
       'cre8_news_cre8_news_category_list' => new sfWidgetFormPropelChoiceMany(array('model' => 'Cre8News')),
     ));
 
     $this->setValidators(array(
       'id'                                => new sfValidatorPropelChoice(array('model' => 'Cre8NewsCategory', 'column' => 'id', 'required' => false)),
       'name'                              => new sfValidatorString(array('max_length' => 128)),
+      'slug'                              => new sfValidatorString(array('max_length' => 160)),
       'cre8_news_cre8_news_category_list' => new sfValidatorPropelChoiceMany(array('model' => 'Cre8News', 'required' => false)),
     ));
-
-    $this->validatorSchema->setPostValidator(
-      new sfValidatorPropelUnique(array('model' => 'Cre8NewsCategory', 'column' => array('name')))
-    );
 
     $this->widgetSchema->setNameFormat('cre8_news_category[%s]');
 
