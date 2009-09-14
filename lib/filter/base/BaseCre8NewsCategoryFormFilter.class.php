@@ -18,12 +18,14 @@ class BaseCre8NewsCategoryFormFilter extends BaseFormFilterPropel
       'name'                              => new sfWidgetFormFilterInput(),
       'slug'                              => new sfWidgetFormFilterInput(),
       'cre8_news_cre8_news_category_list' => new sfWidgetFormPropelChoice(array('model' => 'Cre8News', 'add_empty' => true)),
+      'content_news_box_category_list'    => new sfWidgetFormPropelChoice(array('model' => 'ContentNewsBox', 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
       'name'                              => new sfValidatorPass(array('required' => false)),
       'slug'                              => new sfValidatorPass(array('required' => false)),
       'cre8_news_cre8_news_category_list' => new sfValidatorPropelChoice(array('model' => 'Cre8News', 'required' => false)),
+      'content_news_box_category_list'    => new sfValidatorPropelChoice(array('model' => 'ContentNewsBox', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('cre8_news_category_filters[%s]');
@@ -58,6 +60,31 @@ class BaseCre8NewsCategoryFormFilter extends BaseFormFilterPropel
     $criteria->add($criterion);
   }
 
+  public function addContentNewsBoxCategoryListColumnCriteria(Criteria $criteria, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $criteria->addJoin(ContentNewsBoxCategoryPeer::CRE8_NEWS_CATEGORY_ID, Cre8NewsCategoryPeer::ID);
+
+    $value = array_pop($values);
+    $criterion = $criteria->getNewCriterion(ContentNewsBoxCategoryPeer::CONTENT_NEWS_BOX_ID, $value);
+
+    foreach ($values as $value)
+    {
+      $criterion->addOr($criteria->getNewCriterion(ContentNewsBoxCategoryPeer::CONTENT_NEWS_BOX_ID, $value));
+    }
+
+    $criteria->add($criterion);
+  }
+
   public function getModelName()
   {
     return 'Cre8NewsCategory';
@@ -70,6 +97,7 @@ class BaseCre8NewsCategoryFormFilter extends BaseFormFilterPropel
       'name'                              => 'Text',
       'slug'                              => 'Text',
       'cre8_news_cre8_news_category_list' => 'ManyKey',
+      'content_news_box_category_list'    => 'ManyKey',
     );
   }
 }

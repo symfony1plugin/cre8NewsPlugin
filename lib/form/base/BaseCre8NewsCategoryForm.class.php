@@ -17,6 +17,7 @@ class BaseCre8NewsCategoryForm extends BaseFormPropel
       'name'                              => new sfWidgetFormInput(),
       'slug'                              => new sfWidgetFormInput(),
       'cre8_news_cre8_news_category_list' => new sfWidgetFormPropelChoiceMany(array('model' => 'Cre8News')),
+      'content_news_box_category_list'    => new sfWidgetFormPropelChoiceMany(array('model' => 'ContentNewsBox')),
     ));
 
     $this->setValidators(array(
@@ -24,6 +25,7 @@ class BaseCre8NewsCategoryForm extends BaseFormPropel
       'name'                              => new sfValidatorString(array('max_length' => 128)),
       'slug'                              => new sfValidatorString(array('max_length' => 160)),
       'cre8_news_cre8_news_category_list' => new sfValidatorPropelChoiceMany(array('model' => 'Cre8News', 'required' => false)),
+      'content_news_box_category_list'    => new sfValidatorPropelChoiceMany(array('model' => 'ContentNewsBox', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('cre8_news_category[%s]');
@@ -54,6 +56,17 @@ class BaseCre8NewsCategoryForm extends BaseFormPropel
       $this->setDefault('cre8_news_cre8_news_category_list', $values);
     }
 
+    if (isset($this->widgetSchema['content_news_box_category_list']))
+    {
+      $values = array();
+      foreach ($this->object->getContentNewsBoxCategorys() as $obj)
+      {
+        $values[] = $obj->getContentNewsBoxId();
+      }
+
+      $this->setDefault('content_news_box_category_list', $values);
+    }
+
   }
 
   protected function doSave($con = null)
@@ -61,6 +74,7 @@ class BaseCre8NewsCategoryForm extends BaseFormPropel
     parent::doSave($con);
 
     $this->saveCre8NewsCre8NewsCategoryList($con);
+    $this->saveContentNewsBoxCategoryList($con);
   }
 
   public function saveCre8NewsCre8NewsCategoryList($con = null)
@@ -93,6 +107,41 @@ class BaseCre8NewsCategoryForm extends BaseFormPropel
         $obj = new Cre8NewsCre8NewsCategory();
         $obj->setCre8NewsCategoryId($this->object->getPrimaryKey());
         $obj->setCre8NewsId($value);
+        $obj->save();
+      }
+    }
+  }
+
+  public function saveContentNewsBoxCategoryList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['content_news_box_category_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (is_null($con))
+    {
+      $con = $this->getConnection();
+    }
+
+    $c = new Criteria();
+    $c->add(ContentNewsBoxCategoryPeer::CRE8_NEWS_CATEGORY_ID, $this->object->getPrimaryKey());
+    ContentNewsBoxCategoryPeer::doDelete($c, $con);
+
+    $values = $this->getValue('content_news_box_category_list');
+    if (is_array($values))
+    {
+      foreach ($values as $value)
+      {
+        $obj = new ContentNewsBoxCategory();
+        $obj->setCre8NewsCategoryId($this->object->getPrimaryKey());
+        $obj->setContentNewsBoxId($value);
         $obj->save();
       }
     }
