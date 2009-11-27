@@ -19,7 +19,7 @@ class PluginCre8NewsForm extends BaseCre8NewsForm
     );
     
     $this->setDefault('display_date', array('year' => date('Y'), 'month' => date('n'), 'day' => date('j'), 'hour' => date('G'), 'minute' => date('i')));
-    $this->setWidget('content', new fckFormWidget());
+    $this->setWidget('content', new fckFormWidget(array(), array('width' => 650, 'height' => 450)));
     
     $this->widgetSchema['title']->setAttributes(array('style' => 'width: 350px;'));
     

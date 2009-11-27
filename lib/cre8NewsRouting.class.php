@@ -17,6 +17,7 @@
  */
 class cre8NewsRouting
 {
+  
   /**
    * Listens to the routing.load_configuration event.
    *
@@ -36,5 +37,27 @@ class cre8NewsRouting
     )));
    
   }
+  
+  
+  /**
+   * Listens to the routing.load_configuration event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  static public function addRouteForAdminCategories(sfEvent $event)
+  {
+    $r = $event->getSubject();
+    
+    $r->prependRoute('cre8_news_category', new sfPropelRouteCollection(array(
+      'name'                 => 'cre8_news_category',
+      'model'                => 'Cre8NewsCategory',
+      'module'               => 'cre8_news_category',
+      'prefix_path'			 => 'newsCats',
+      'with_wildcard_routes' => true,
+      'requirements'         => array(),
+    )));
+   
+  }
+  
 
 }
